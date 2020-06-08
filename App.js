@@ -1,19 +1,23 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { createAppContainer } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
+import InitialScreen from './src/screens/InitialScreen'
+import SigninScreen from './src/screens/SigninScreen'
+import FormScreen from './src/screens/FormScreen'
+import { Provider as AuthProvider } from './src/context/AuthContext'
+import { setNavigator } from './src/navigationRef'
 
-export default function App() {
+const stackNavigator = createStackNavigator({
+  // InitialScreen,
+  SigninScreen, FormScreen
+})
+
+const App = createAppContainer(stackNavigator)
+
+export default _ => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+      <AuthProvider>
+        <App ref={navigator => { setNavigator(navigator) }} />
+      </AuthProvider>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
