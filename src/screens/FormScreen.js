@@ -7,26 +7,35 @@ import { NavigationEvents } from 'react-navigation'
 
 const FormScreen = ({navigation}) => {
     const { state: {
-        streamUser, youtubeKey, twitchKey, facebookKey
+        streamUser,
+        youtubeKey, youtubeUsed,
+        twitchKey, twitchUsed,
+        facebookKey, facebookUsed
     }, tryLocalSignin, getStreamie, putStreamie, signout } = useContext(AuthContext)
-    console.log(youtubeKey)
-    const [youtube, setYoutube] = useState('')
+    useEffect(_ => { tryLocalSignin() }, [])
     useEffect(_ => {
-        tryLocalSignin()
-        // getStreamie()
-    }, [])
-    const [youtubeActive, setYoutubeActive] = useState(true)
+        setYoutube(youtubeKey)
+        setYoutubeActive(youtubeUsed)
+        setTwitch(twitchKey)
+        setTwitchActive(twitchUsed)
+        setFacebook(facebookKey)
+        setFacebookActive(facebookUsed)
+    },[youtubeUsed, youtubeKey, twitchUsed, twitchKey, facebookUsed, facebookKey])
+    const [youtube, setYoutube] = useState('')
+    const [youtubeActive, setYoutubeActive] = useState(youtubeUsed)
     const [twitch, setTwitch] = useState('')
-    const [twitchActive, setTwitchActive] = useState(true)
+    const [twitchActive, setTwitchActive] = useState(twitchUsed)
     const [facebook, setFacebook] = useState('')
-    const [facebookActive, setFacebookActive] = useState(true)
+    const [facebookActive, setFacebookActive] = useState(facebookUsed)
     return (
         <View style={styles.container}>
             <NavigationEvents
-                onWillFocus={getStreamie}
+                onWillFocus={_ => {
+                    getStreamie()
+                }}
             />
             <Text style={{alignSelf:'center'}}>{streamUser}</Text>
-            <Text style={{margin:10, fontSize: 14, color: '#666', fontWeight: 'bold'}}>active</Text>
+            <Text style={{margin:10, marginBottom:40, fontSize: 14, color: '#666', fontWeight: 'bold'}}>active</Text>
             <View style={{flex:1, flexDirection: 'row'}}>
                 <View style={{flex: 1, maxWidth: 50}}>
                     <CheckBox
@@ -44,6 +53,7 @@ const FormScreen = ({navigation}) => {
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='YOUTUBE'
+                        labelStyle={styles.label}
                     />
                 </View>
             </View>
@@ -64,6 +74,7 @@ const FormScreen = ({navigation}) => {
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='TWITCH'
+                        labelStyle={styles.label}
                     />
                 </View>
             </View>
@@ -84,6 +95,7 @@ const FormScreen = ({navigation}) => {
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='FACEBOOK'
+                        labelStyle={styles.label}
                     />
                 </View>
             </View>
@@ -115,8 +127,11 @@ const styles = StyleSheet.create({
         marginBottom: 130
     },
     logout: {
-        marginTop: 20,
+        marginTop: 40,
         alignSelf: 'center'
+    },
+    label: {
+        color: '#000'
     }
 })
 
