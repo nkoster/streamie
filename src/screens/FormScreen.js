@@ -2,14 +2,19 @@ import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Input, Button, CheckBox } from 'react-native-elements'
 import { Context as AuthContext } from '../context/AuthContext'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { NavigationEvents } from 'react-navigation'
 
-const FormScreen = _ => {
+const FormScreen = ({navigation}) => {
     const { state: {
         streamUser, youtubeKey, twitchKey, facebookKey
-    }, tryLocalSignin, getStreamie, putStreamie } = useContext(AuthContext)
-    console.log('STATE', streamUser)
-    useEffect(_ => { tryLocalSignin();getStreamie() }, [])
-    const [youtube, setYoutube] = useState(youtubeKey)
+    }, tryLocalSignin, getStreamie, putStreamie, signout } = useContext(AuthContext)
+    console.log(youtubeKey)
+    const [youtube, setYoutube] = useState('')
+    useEffect(_ => {
+        tryLocalSignin()
+        // getStreamie()
+    }, [])
     const [youtubeActive, setYoutubeActive] = useState(true)
     const [twitch, setTwitch] = useState('')
     const [twitchActive, setTwitchActive] = useState(true)
@@ -17,6 +22,9 @@ const FormScreen = _ => {
     const [facebookActive, setFacebookActive] = useState(true)
     return (
         <View style={styles.container}>
+            <NavigationEvents
+                onWillFocus={getStreamie}
+            />
             <Text style={{alignSelf:'center'}}>{streamUser}</Text>
             <Text style={{margin:10, fontSize: 14, color: '#666', fontWeight: 'bold'}}>active</Text>
             <View style={{flex:1, flexDirection: 'row'}}>
@@ -32,8 +40,7 @@ const FormScreen = _ => {
                     <Input
                         value={youtube}
                         placeholder={youtubeKey}
-                        onChangeText={data=>{setYoutube(data)}}
-                        // placeholder='enter a youtube key here'
+                        onChangeText={setYoutube}
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='YOUTUBE'
@@ -82,13 +89,19 @@ const FormScreen = _ => {
             </View>
             <Button
                 title='submit your changes'
-                onPress={_ => putStreamie({
-                    streamUser,
-                    youtube: youtube || youtubeKey, youtubeActive,
-                    twitch: twitch || twitchKey, twitchActive,
-                    facebook: facebook || facebookKey, facebookActive
-                })}
+                onPress={_ => {
+                    putStreamie({
+                        streamUser,
+                        youtube: youtube || youtubeKey, youtubeActive,
+                        twitch: twitch || twitchKey, twitchActive,
+                        facebook: facebook || facebookKey, facebookActive
+                    })
+                    navigation.navigate('SaveScreen')
+                }}
             />
+            <TouchableOpacity
+                onPress={signout}
+            ><Text style={styles.logout}>logout</Text></TouchableOpacity>
         </View>
     )
 }
@@ -100,6 +113,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         marginTop: 130,
         marginBottom: 130
+    },
+    logout: {
+        marginTop: 20,
+        alignSelf: 'center'
     }
 })
 
