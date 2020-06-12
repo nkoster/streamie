@@ -13,6 +13,9 @@ const authReducer = (state, action) => {
             return { errorMessage: '', token: action.payload }
         case 'signout':
             return { token: null }
+        case 'getStreamie':
+            console.log(action.payload)
+            return action.payload
         default: return state
     }
 }
@@ -48,8 +51,26 @@ const signout = dispatch => async _ => {
     navigate('SigninScreen')
 }
 
+const getStreamie = dispatch => async _ => {
+    try {
+        const response = await streamieApi.get('/getstreamie')
+        dispatch({ type: 'getStreamie', payload: response.data })
+    } catch(err) {
+        console.log('getstreamie error:', err.message)
+    }
+}
+
+const putStreamie = dispatch => async data => {
+    console.log(data)
+    try {
+        streamieApi.post('/putstreamie', data)
+    } catch(err) {
+        console.log('putstreamie error:', err.message)
+    }
+}
+
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signin, signout, clearErrorMessage, tryLocalSignin },
+    { signin, signout, clearErrorMessage, tryLocalSignin, getStreamie, putStreamie },
     { token: null, errorMessage: '' }
 )
