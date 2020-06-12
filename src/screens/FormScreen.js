@@ -4,9 +4,12 @@ import { Input, Button, CheckBox } from 'react-native-elements'
 import { Context as AuthContext } from '../context/AuthContext'
 
 const FormScreen = _ => {
-    const { tryLocalSignin } = useContext(AuthContext)
-    useEffect(_ => { tryLocalSignin() }, [])
-    const [youtube, setYoutube] = useState('')
+    const { state: {
+        streamUser, youtubeKey, twitchKey, facebookKey
+    }, tryLocalSignin, getStreamie, putStreamie } = useContext(AuthContext)
+    console.log('STATE', streamUser)
+    useEffect(_ => { tryLocalSignin();getStreamie() }, [])
+    const [youtube, setYoutube] = useState(youtubeKey)
     const [youtubeActive, setYoutubeActive] = useState(true)
     const [twitch, setTwitch] = useState('')
     const [twitchActive, setTwitchActive] = useState(true)
@@ -14,11 +17,7 @@ const FormScreen = _ => {
     const [facebookActive, setFacebookActive] = useState(true)
     return (
         <View style={styles.container}>
-            <Button
-                style={{marginBottom: 50}}
-                title='get current keys'
-                onPress={_ => {}}
-            />
+            <Text style={{alignSelf:'center'}}>{streamUser}</Text>
             <Text style={{margin:10, fontSize: 14, color: '#666', fontWeight: 'bold'}}>active</Text>
             <View style={{flex:1, flexDirection: 'row'}}>
                 <View style={{flex: 1, maxWidth: 50}}>
@@ -32,8 +31,9 @@ const FormScreen = _ => {
                 <View style={{flex: 1, alignSelf: 'stretch'}}>
                     <Input
                         value={youtube}
-                        onChangeText={setYoutube}
-                        placeholder='enter a youtube key here'
+                        placeholder={youtubeKey}
+                        onChangeText={data=>{setYoutube(data)}}
+                        // placeholder='enter a youtube key here'
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='YOUTUBE'
@@ -53,7 +53,7 @@ const FormScreen = _ => {
                     <Input
                         value={twitch}
                         onChangeText={setTwitch}
-                        placeholder='enter a youtube key here'
+                        placeholder={twitchKey}
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='TWITCH'
@@ -73,7 +73,7 @@ const FormScreen = _ => {
                     <Input
                         value={facebook}
                         onChangeText={setFacebook}
-                        placeholder='enter a youtube key here'
+                        placeholder={facebookKey}
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='FACEBOOK'
@@ -82,7 +82,12 @@ const FormScreen = _ => {
             </View>
             <Button
                 title='submit your changes'
-                onPress={_ => {}}
+                onPress={_ => putStreamie({
+                    streamUser,
+                    youtube: youtube || youtubeKey, youtubeActive,
+                    twitch: twitch || twitchKey, twitchActive,
+                    facebook: facebook || facebookKey, facebookActive
+                })}
             />
         </View>
     )
