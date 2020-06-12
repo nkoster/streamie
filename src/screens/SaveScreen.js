@@ -7,7 +7,7 @@ const SaveScreen = ({navigation}) => {
         <View>
             <NavigationEvents
                 onWillFocus={_ => {
-                    setTimeout(_ => navigation.navigate('FormScreen'), 2000)
+                    setTimeout(_ => navigation.navigate('FormScreen'), 1500)
                 }}
             />
             <Text style={styles.text}>streamie updated!</Text>
