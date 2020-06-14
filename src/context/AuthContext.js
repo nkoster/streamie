@@ -67,8 +67,7 @@ const getStreamie = dispatch => async streamUser => {
     }
 }
 
-const putStreamie = dispatch => async data => {
-    console.log(data)
+const putStreamie = _ => async data => {
     try {
         streamieApi.post('/putstreamie', data)
     } catch(err) {
