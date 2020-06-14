@@ -34,8 +34,8 @@ const FormScreen = ({navigation}) => {
                     getStreamie(streamUser)
                 }}
             />
-            <Text style={{alignSelf:'center', fontSize:30}}>{streamUser}</Text>
-            <Text style={{margin:10, marginBottom:40, fontSize: 14, color: '#666', fontWeight: 'bold'}}>active</Text>
+            <Text style={{alignSelf:'center', fontSize: 30, marginBottom: 30}}>{streamUser}</Text>
+            <Text style={{margin:10, marginBottom:20, fontSize: 14, color: '#5090ff', fontWeight: 'bold'}}>active</Text>
             <View style={{flex:1, flexDirection: 'row'}}>
                 <View style={{flex: 1, maxWidth: 50}}>
                     <CheckBox
@@ -99,21 +99,25 @@ const FormScreen = ({navigation}) => {
                     />
                 </View>
             </View>
-            <Button
-                title='submit your changes'
-                onPress={_ => {
-                    putStreamie({
-                        streamUser,
-                        youtube: youtube || youtubeKey, youtubeActive,
-                        twitch: twitch || twitchKey, twitchActive,
-                        facebook: facebook || facebookKey, facebookActive
-                    })
-                    navigation.navigate('SaveScreen')
-                }}
-            />
-            <TouchableOpacity
-                onPress={signout}
-            ><Text style={styles.logout}>logout</Text></TouchableOpacity>
+            <View style={{width:230, flex:1, alignSelf:'center', marginTop:30}}>
+                <Button
+                    title='submit your changes'
+                    onPress={_ => {
+                        putStreamie({
+                            streamUser,
+                            youtube: youtube || youtubeKey, youtubeActive,
+                            twitch: twitch || twitchKey, twitchActive,
+                            facebook: facebook || facebookKey, facebookActive
+                        })
+                        navigation.navigate('SaveScreen', { streamUser })
+                    }}
+                />
+                <View style={{height:50}} />
+                <TouchableOpacity
+                    style={styles.logout}
+                    onPress={signout}
+                ><Text>logout</Text></TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -127,7 +131,8 @@ const styles = StyleSheet.create({
         marginBottom: 130
     },
     logout: {
-        marginTop: 40,
+        borderWidth: 0,
+        borderColor: 'red',
         alignSelf: 'center'
     },
     label: {
