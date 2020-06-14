@@ -10,7 +10,11 @@ const authReducer = (state, action) => {
         case 'clear_error':
             return { ...state, errorMessage: '' }
         case 'signin':
-            return { errorMessage: '', token: action.payload }
+            return {
+                errorMessage: '',
+                token: action.payload.token,
+                streamUser: action.payload.streamUser
+            }
         case 'signout':
             return { token: null }
         case 'getStreamie':
@@ -38,8 +42,8 @@ const signin = dispatch => async ({ email, password }) => {
     try {
         const response = await streamieApi.post('/signin', { email, password })
         await AsyncStorage.setItem('token', response.data.token)
-        dispatch({ type: 'signin', payload: response.data.token})
-        navigate('FormScreen', {})
+        dispatch({ type: 'signin', payload: response.data})
+        navigate('FormScreen')
     } catch(err) {
         dispatch({ type: 'add_error', payload: err.message })
     }
@@ -51,9 +55,9 @@ const signout = dispatch => async _ => {
     navigate('SigninScreen')
 }
 
-const getStreamie = dispatch => async _ => {
+const getStreamie = dispatch => async streamUser => {
     try {
-        const response = await streamieApi.get('/getstreamie')
+        const response = await streamieApi.get(`/getstreamie/${streamUser}`)
         dispatch({ type: 'getStreamie', payload: response.data })
     } catch(err) {
         console.log('getstreamie error:', err.message)
