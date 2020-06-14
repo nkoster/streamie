@@ -1,7 +1,7 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import { NavigationEvents } from 'react-navigation'
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const SaveScreen = ({navigation}) => {
     const streamUser = navigation.getParam('streamUser')
@@ -13,7 +13,12 @@ const SaveScreen = ({navigation}) => {
                 }}
             />
             <Text style={styles.text}>{streamUser} updated!</Text>
-            <FontAwesome5 style={{alignSelf:'center'}} name='wine-bottle' size={70} color='#5090ff' />
+            {/* <Image
+                style={{height:200,width:200,alignSelf:'center'}}
+                resizeMode='contain'
+                source={require('../../assets/bierie.png')}
+            /> */}
+            <MaterialCommunityIcons style={{alignSelf:'center'}} name='rocket' size={120} color='#5090ff' />
         </View>
     )
 }
