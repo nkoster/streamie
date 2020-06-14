@@ -34,7 +34,7 @@ const FormScreen = ({navigation}) => {
                     getStreamie()
                 }}
             />
-            <Text style={{alignSelf:'center'}}>{streamUser}</Text>
+            <Text style={{alignSelf:'center', fontSize:30}}>{streamUser}</Text>
             <Text style={{margin:10, marginBottom:40, fontSize: 14, color: '#666', fontWeight: 'bold'}}>active</Text>
             <View style={{flex:1, flexDirection: 'row'}}>
                 <View style={{flex: 1, maxWidth: 50}}>
