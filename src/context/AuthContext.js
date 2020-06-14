@@ -18,7 +18,6 @@ const authReducer = (state, action) => {
         case 'signout':
             return { token: null }
         case 'getStreamie':
-            console.log(action.payload)
             return action.payload
         default: return state
     }
