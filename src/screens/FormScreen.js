@@ -31,7 +31,7 @@ const FormScreen = ({navigation}) => {
         <View style={styles.container}>
             <NavigationEvents
                 onWillFocus={_ => {
-                    getStreamie()
+                    getStreamie(streamUser)
                 }}
             />
             <Text style={{alignSelf:'center', fontSize:30}}>{streamUser}</Text>
