@@ -31,7 +31,8 @@ const clearErrorMessage = dispatch => _ => {
 const tryLocalSignin = dispatch => async _ => {
     const token = await AsyncStorage.getItem('token')
     if (token) {
-        dispatch({ type: 'signin', payload: token })
+        const streamUser = await AsyncStorage.getItem('streamUser')
+        dispatch({ type: 'signin', payload: { token, streamUser }})
         navigate('FormScreen', {})
     } else {
         navigate('SigninScreen')
@@ -42,6 +43,7 @@ const signin = dispatch => async ({ email, password }) => {
     try {
         const response = await streamieApi.post('/signin', { email, password })
         await AsyncStorage.setItem('token', response.data.token)
+        await AsyncStorage.setItem('streamUser', response.data.streamUser)
         dispatch({ type: 'signin', payload: response.data})
         navigate('FormScreen')
     } catch(err) {
@@ -51,6 +53,7 @@ const signin = dispatch => async ({ email, password }) => {
 
 const signout = dispatch => async _ => {
     await AsyncStorage.removeItem('token')
+    await AsyncStorage.removeItem('streamUser')
     dispatch({ type: 'signout' })
     navigate('SigninScreen')
 }
