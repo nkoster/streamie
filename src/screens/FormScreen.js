@@ -34,10 +34,10 @@ const FormScreen = ({navigation}) => {
                     getStreamie(streamUser)
                 }}
             />
-            <Text style={{alignSelf:'center', fontSize: 30, marginBottom: 30}}>{streamUser}</Text>
-            <Text style={{margin:10, marginBottom:20, fontSize: 14, color: '#5090ff', fontWeight: 'bold'}}>active</Text>
-            <View style={{flex:1, flexDirection: 'row'}}>
-                <View style={{flex: 1, maxWidth: 50}}>
+            <Text style={{alignSelf:'center', fontSize: 30, marginBottom: -60}}>{streamUser}</Text>
+            <Text style={styles.active}>ACTIVE</Text>
+            <View style={{flex:1, flexDirection: 'row', minHeight: 50}}>
+                <View style={{flex: 1, maxWidth: 60}}>
                     <CheckBox
                         onPress={_ => setYoutubeActive(!youtubeActive)}
                         checked={youtubeActive}
@@ -57,8 +57,8 @@ const FormScreen = ({navigation}) => {
                     />
                 </View>
             </View>
-            <View style={{flex:1, flexDirection: 'row'}}>
-                <View style={{flex: 1, maxWidth: 50}}>
+            <View style={{flex:1, flexDirection: 'row', minHeight: 50}}>
+                <View style={{flex: 1, maxWidth: 60}}>
                     <CheckBox
                         onPress={_ => setTwitchActive(!twitchActive)}
                         checked={twitchActive}
@@ -78,8 +78,8 @@ const FormScreen = ({navigation}) => {
                     />
                 </View>
             </View>
-            <View style={{flex:1, flexDirection: 'row'}}>
-                <View style={{flex: 1, maxWidth: 50}}>
+            <View style={{flex:1, flexDirection: 'row', minHeight: 50}}>
+                <View style={{flex: 1, maxWidth: 60}}>
                     <CheckBox
                         onPress={_ => setFacebookActive(!facebookActive)}
                         checked={facebookActive}
@@ -99,7 +99,7 @@ const FormScreen = ({navigation}) => {
                     />
                 </View>
             </View>
-            <View style={{width:230, flex:1, alignSelf:'center', marginTop:30}}>
+            <View style={{width:230, flex:1, alignSelf:'center', marginTop:10}}>
                 <Button
                     title='submit your changes'
                     onPress={_ => {
@@ -112,7 +112,7 @@ const FormScreen = ({navigation}) => {
                         navigation.navigate('SaveScreen', { streamUser })
                     }}
                 />
-                <View style={{height:50}} />
+                <View style={{height:30}} />
                 <TouchableOpacity
                     style={styles.logout}
                     onPress={signout}
@@ -121,6 +121,10 @@ const FormScreen = ({navigation}) => {
         </View>
     )
 }
+
+const TEXT_LENGTH = 40
+const TEXT_HEIGHT = 14
+const OFFSET = TEXT_LENGTH / 2 - TEXT_HEIGHT / 2
 
 const styles = StyleSheet.create({
     container: {
@@ -137,6 +141,19 @@ const styles = StyleSheet.create({
     },
     label: {
         color: '#000'
+    },
+    active: {
+        margin: 10,
+        marginBottom: 60,
+        marginLeft: -4,
+        fontSize: 16,
+        color: '#5090ff',
+        fontWeight: 'bold',
+        borderWidth: 0,
+        borderColor: 'red',
+        transform: [{ rotate: '-90deg'}],
+        height: 35,
+        width: 80
     }
 })
 
