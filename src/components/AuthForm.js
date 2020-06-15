@@ -1,15 +1,8 @@
 import React, { useState } from 'react'
 import { Text, Button, Input } from 'react-native-elements'
 import Spacer from '../components/Spacer'
-import * as Font from 'expo-font'
 
 const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
-    const loader = async _ => {
-        await Font.loadAsync({
-            Hamish: require('../../assets/fonts/Hamish.otf')
-        })
-    }
-    loader()
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
     return (
@@ -66,7 +59,6 @@ const styles = {
         marginLeft: 8
     },
     title: {
-        fontFamily: 'Hamish',
         marginBottom: 30,
         fontSize: 40,
         color: '#5090ff',
