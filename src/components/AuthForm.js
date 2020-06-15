@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
 import { Text, Button, Input } from 'react-native-elements'
 import Spacer from '../components/Spacer'
+import * as Font from 'expo-font'
 
 const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
+    const loader = async _ => {
+        await Font.loadAsync({
+            Hamish: require('../../assets/fonts/Hamish.otf')
+        })
+    }
+    loader()
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
     return (
         <>
             <Spacer />
-            <Spacer><Text style={styles.title} h3>{headerText}</Text></Spacer>
+            <Spacer><Text style={styles.title}>{headerText}</Text></Spacer>
             <Spacer />
             <Spacer>
                 <Input
@@ -36,6 +43,8 @@ const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
             <Spacer>
                 <Button
                     title={submitButtonText}
+                    titleStyle={{backgroundColor:'#5090ff'}}
+                    buttonStyle={{backgroundColor:'#5090ff'}}
                     onPress={() => {
                         return email.length > 2 && password.length > 1
                             ? onSubmit({ email, password })
@@ -57,12 +66,11 @@ const styles = {
         marginLeft: 8
     },
     title: {
+        fontFamily: 'Hamish',
         marginBottom: 30,
-        color: 'gray',
-        textAlign: 'center',
-        textShadowColor: 'black', 
-        textShadowOffset: { width: 0, height: 0 },
-        textShadowRadius: 1
+        fontSize: 40,
+        color: '#5090ff',
+        textAlign: 'center'
     }
 }
 
