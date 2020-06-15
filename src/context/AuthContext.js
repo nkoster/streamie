@@ -57,6 +57,18 @@ const signout = dispatch => async _ => {
     navigate('SigninScreen')
 }
 
+const signup = dispatch => async ({ email, password, streamUser }) => {
+    console.log(streamUser)
+    try {
+        const response = await streamieApi.post('/signup', { email, password, streamUser })
+        // await AsyncStorage.setItem('token', response.data.token)
+        // dispatch({ type: 'signin', payload: response.data.token})
+        navigate('FormScreen', {})
+    } catch(err) {
+        dispatch({ type: 'add_error', payload: `email or streamUser already in use` })
+    }
+}
+
 const getStreamie = dispatch => async streamUser => {
     try {
         const response = await streamieApi.get(`/getstreamie/${streamUser}`)
@@ -76,6 +88,6 @@ const putStreamie = _ => async data => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signin, signout, clearErrorMessage, tryLocalSignin, getStreamie, putStreamie },
+    { signin, signout, signup, clearErrorMessage, tryLocalSignin, getStreamie, putStreamie },
     { token: null, errorMessage: '' }
 )
