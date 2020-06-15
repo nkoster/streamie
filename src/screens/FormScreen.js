@@ -4,8 +4,15 @@ import { Input, Button, CheckBox } from 'react-native-elements'
 import { Context as AuthContext } from '../context/AuthContext'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { NavigationEvents } from 'react-navigation'
+import * as Font from 'expo-font'
 
 const FormScreen = ({navigation}) => {
+    const loader = async _ => {
+        await Font.loadAsync({
+            Hamish: require('../../assets/fonts/Hamish.otf')
+        })
+    }
+    loader()
     const { state: {
         streamUser,
         youtubeKey, youtubeUsed,
@@ -34,7 +41,13 @@ const FormScreen = ({navigation}) => {
                     getStreamie(streamUser)
                 }}
             />
-            <Text style={{alignSelf:'center', fontSize: 30, marginBottom: -60}}>{streamUser}</Text>
+            <Text style={{
+                alignSelf:'center',
+                fontSize: 70,
+                fontFamily: 'Hamish',
+                marginBottom: -80,
+                color: '#5090ff'
+            }}>{streamUser}</Text>
             <Text style={styles.active}>ACTIVE</Text>
             <View style={{flex:1, flexDirection: 'row', minHeight: 50}}>
                 <View style={{flex: 1, maxWidth: 60}}>
@@ -102,6 +115,8 @@ const FormScreen = ({navigation}) => {
             <View style={{width:230, flex:1, alignSelf:'center', marginTop:10}}>
                 <Button
                     title='submit your changes'
+                    titleStyle={{backgroundColor:'#5090ff'}}
+                    buttonStyle={{backgroundColor:'#5090ff'}}
                     onPress={_ => {
                         putStreamie({
                             streamUser,
@@ -113,6 +128,12 @@ const FormScreen = ({navigation}) => {
                     }}
                 />
                 <View style={{height:30}} />
+                {streamUser === 'teststream'
+                    ?   <TouchableOpacity
+                            style={styles.logout}
+                            onPress={_ => navigation.navigate('SignupScreen')}
+                        ><Text>signup</Text></TouchableOpacity>
+                    : null}
                 <TouchableOpacity
                     style={styles.logout}
                     onPress={signout}
@@ -144,7 +165,7 @@ const styles = StyleSheet.create({
     },
     active: {
         margin: 10,
-        marginBottom: 60,
+        marginBottom: 80,
         marginLeft: -4,
         fontSize: 16,
         color: '#5090ff',
