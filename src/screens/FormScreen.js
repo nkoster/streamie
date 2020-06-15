@@ -4,15 +4,8 @@ import { Input, Button, CheckBox } from 'react-native-elements'
 import { Context as AuthContext } from '../context/AuthContext'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { NavigationEvents } from 'react-navigation'
-import * as Font from 'expo-font'
 
 const FormScreen = ({navigation}) => {
-    const loader = async _ => {
-        await Font.loadAsync({
-            Hamish: require('../../assets/fonts/Hamish.otf')
-        })
-    }
-    loader()
     const { state: {
         streamUser,
         youtubeKey, youtubeUsed,
@@ -20,7 +13,14 @@ const FormScreen = ({navigation}) => {
         facebookKey, facebookUsed
     }, tryLocalSignin, getStreamie, putStreamie, signout } = useContext(AuthContext)
     useEffect(_ => { tryLocalSignin() }, [])
+    const [youtube, setYoutube] = useState('')
+    const [youtubeActive, setYoutubeActive] = useState(true)
+    const [twitch, setTwitch] = useState('')
+    const [twitchActive, setTwitchActive] = useState(true)
+    const [facebook, setFacebook] = useState('')
+    const [facebookActive, setFacebookActive] = useState(true)
     useEffect(_ => {
+        getStreamie(streamUser)
         setYoutube(youtubeKey)
         setYoutubeActive(youtubeUsed)
         setTwitch(twitchKey)
@@ -28,12 +28,6 @@ const FormScreen = ({navigation}) => {
         setFacebook(facebookKey)
         setFacebookActive(facebookUsed)
     },[youtubeUsed, youtubeKey, twitchUsed, twitchKey, facebookUsed, facebookKey])
-    const [youtube, setYoutube] = useState('')
-    const [youtubeActive, setYoutubeActive] = useState(youtubeUsed)
-    const [twitch, setTwitch] = useState('')
-    const [twitchActive, setTwitchActive] = useState(twitchUsed)
-    const [facebook, setFacebook] = useState('')
-    const [facebookActive, setFacebookActive] = useState(facebookUsed)
     return (
         <View style={styles.container}>
             <NavigationEvents
@@ -43,8 +37,7 @@ const FormScreen = ({navigation}) => {
             />
             <Text style={{
                 alignSelf:'center',
-                fontSize: 70,
-                fontFamily: 'Hamish',
+                fontSize: 60,
                 marginBottom: -80,
                 color: '#5090ff'
             }}>{streamUser}</Text>
@@ -60,13 +53,13 @@ const FormScreen = ({navigation}) => {
                 </View>
                 <View style={{flex: 1, alignSelf: 'stretch'}}>
                     <Input
-                        value={youtube}
+                        value={youtube || ''}
                         placeholder={youtubeKey}
                         onChangeText={setYoutube}
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='YOUTUBE'
-                        labelStyle={styles.label}
+                        // labelStyle={styles.label}
                     />
                 </View>
             </View>
@@ -81,13 +74,13 @@ const FormScreen = ({navigation}) => {
                 </View>
                 <View style={{flex: 1, alignSelf: 'stretch'}}>
                     <Input
-                        value={twitch}
+                        value={twitch || ''}
                         onChangeText={setTwitch}
                         placeholder={twitchKey}
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='TWITCH'
-                        labelStyle={styles.label}
+                        // labelStyle={styles.label}
                     />
                 </View>
             </View>
@@ -102,18 +95,18 @@ const FormScreen = ({navigation}) => {
                 </View>
                 <View style={{flex: 1, alignSelf: 'stretch'}}>
                     <Input
-                        value={facebook}
+                        value={facebook || ''}
                         onChangeText={setFacebook}
                         placeholder={facebookKey}
                         autoCapitalize='none'
                         autoCorrect={false}
                         label='FACEBOOK'
-                        labelStyle={styles.label}
+                        // labelStyle={styles.label}
                     />
                 </View>
             </View>
             <View style={{width:230, flex:1, alignSelf:'center', marginTop:10}}>
-                <Button
+                <View style={{height:42}}><Button
                     title='submit your changes'
                     titleStyle={{backgroundColor:'#5090ff'}}
                     buttonStyle={{backgroundColor:'#5090ff'}}
@@ -127,6 +120,7 @@ const FormScreen = ({navigation}) => {
                         navigation.navigate('SaveScreen', { streamUser })
                     }}
                 />
+                </View>
                 <View style={{height:30}} />
                 {streamUser === 'teststream'
                     ?   <TouchableOpacity
